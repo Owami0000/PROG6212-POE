@@ -10,7 +10,7 @@ Part1 submission
 - Allow **Participants** to discover, enter, and track their performance in events
 - Provide a centralised platform for South Africa's vibrant road events culture
 
-## 👥 User Roles
+## User Roles
 
 ### 1. Organiser
 The **Organiser** is the event creator and administrator. They have full control over their events:
