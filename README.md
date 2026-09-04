@@ -101,5 +101,8 @@ Without a bridge entity, we would have a direct many-to-many relationship betwee
 ### Technology Stack
 - **Database**: SSMS
 
+## Actions workflow
+<img width="1802" height="712" alt="image" src="https://github.com/user-attachments/assets/7b5f06f7-e9a3-4980-8950-2049133620da" />
+
 
   
