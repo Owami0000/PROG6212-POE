@@ -20,4 +20,71 @@ The **Organiser** is the event creator and administrator. They have full control
 The **Participant** is the athlete/entrant who takes part in events
 
 
+## Entity Relationship Diagram (ERD)
 
+### Entities Overview
+
+The database consists of **6 core entities** with a bridge entity pattern:
+
+### Entity Descriptions
+
+#### 1. Users
+Stores login credentials and authentication information. Each user has a unique email and assigned role.
+
+**Key Attributes:**
+- UserID (Primary Key)
+- Email (Unique)
+- PasswordHash
+- Role (Organiser or Participant)
+- CreatedAt
+
+#### 2. Profiles
+Stores personal information about users. Separate from Users for better data management.
+
+**Key Attributes:**
+- ProfileID (Primary Key)
+- UserID (Foreign Key, Unique)
+- FirstName, LastName
+- DateOfBirth, Gender
+- PhoneNumber
+- ProfilePicture
+
+#### 3. Events
+Stores all event information. Each event is created by an Organiser.
+
+**Key Attributes:**
+- EventID (Primary Key)
+- OrganiserID (Foreign Key)
+- Name, Description
+- Date, Location
+- Distance, EventType
+- Status, CreatedAt
+
+#### 4. Categories
+Defines age groups or distance categories for each event.
+
+**Key Attributes:**
+- CategoryID (Primary Key)
+- EventID (Foreign Key)
+- Name
+- MinAge, MaxAge
+- Distance
+
+#### 5. Enrolments (Bridge Entity)
+Links Participants to Categories. Resolves the many-to-many relationship and stores enrolment data.
+
+**Key Attributes:**
+- EnrolmentID (Primary Key)
+- ParticipantID (Foreign Key)
+- CategoryID (Foreign Key)
+- EnrolmentDate
+- Status
+
+#### 6. Results
+Stores participant performance data for their enrolment.
+
+**Key Attributes:**
+- ResultID (Primary Key)
+- EnrolmentID (Foreign Key, Unique)
+- FinishTime
+- Position
