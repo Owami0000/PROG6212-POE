@@ -88,9 +88,13 @@ Stores participant performance data for their enrolment.
 #### The Problem: Many-to-Many Relationship
 Without a bridge entity, we would have a direct many-to-many relationship between Participants and Categories:
 
-
 **Key Attributes:**
 - ResultID (Primary Key)
 - EnrolmentID (Foreign Key, Unique)
 - FinishTime
 - Position
+
+## API Endpoint Plan
+
+
+  
