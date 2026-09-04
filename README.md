@@ -83,6 +83,12 @@ Links Participants to Categories. Resolves the many-to-many relationship and sto
 #### 6. Results
 Stores participant performance data for their enrolment.
 
+### Why Enrolment is a Bridge Entity
+
+#### The Problem: Many-to-Many Relationship
+Without a bridge entity, we would have a direct many-to-many relationship between Participants and Categories:
+
+
 **Key Attributes:**
 - ResultID (Primary Key)
 - EnrolmentID (Foreign Key, Unique)
