@@ -125,6 +125,11 @@ Without a bridge entity, we would have a direct many-to-many relationship betwee
 ### Technology Stack
 - **Database**: SSMS
 
+### Part 1 - Planning (Current)
+SQL Server Management Studio (SSMS) | Database design and scripting |
+draw.io / diagrams.net ERD creation 
+Version control- GitHub
+
 ## Actions workflow
 <img width="1802" height="712" alt="image" src="https://github.com/user-attachments/assets/7b5f06f7-e9a3-4980-8950-2049133620da" />
 
