@@ -135,6 +135,8 @@ https://youtu.be/TAcK9OlQMWw?si=_jBRKHaoJ70CUrPB
 
 ## Actions workflow
 <img width="1802" height="712" alt="image" src="https://github.com/user-attachments/assets/7b5f06f7-e9a3-4980-8950-2049133620da" />
+<img width="1477" height="771" alt="image" src="https://github.com/user-attachments/assets/107e7bb6-4f12-4490-b736-4d9b5f610e19" />
+
 
 
   
