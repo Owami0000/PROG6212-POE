@@ -130,6 +130,9 @@ SQL Server Management Studio (SSMS) | Database design and scripting |
 draw.io / diagrams.net ERD creation 
 Version control- GitHub
 
+## Youtube link
+https://youtu.be/TAcK9OlQMWw?si=_jBRKHaoJ70CUrPB
+
 ## Actions workflow
 <img width="1802" height="712" alt="image" src="https://github.com/user-attachments/assets/7b5f06f7-e9a3-4980-8950-2049133620da" />
 
