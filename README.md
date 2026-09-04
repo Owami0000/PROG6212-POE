@@ -18,6 +18,30 @@ The **Organiser** is the event creator and administrator. They have full control
 ### 2. Participant
 
 The **Participant** is the athlete/entrant who takes part in events
+## Short Description
+
+## 1. Organiser
+
+The **Organiser** is the event creator and administrator.
+
+**What they can do:**
+- Create, update, and delete events
+- Define age/distance categories for events
+- View all participants enrolled in their events
+- Capture finish times and positions for participants
+- Control event status (Draft → Open → Closed → Archived)
+
+
+## 2. Participant
+
+The **Participant** is the athlete/entrant who takes part in events.
+
+**What they can do:**
+- Register and manage personal profile
+- Browse upcoming events
+- Enrol in events by selecting a category
+- View enrolment history
+- Track personal results and performance
 
 
 ## Entity Relationship Diagram (ERD)
