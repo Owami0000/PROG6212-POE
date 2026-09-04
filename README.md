@@ -96,5 +96,10 @@ Without a bridge entity, we would have a direct many-to-many relationship betwee
 
 ## API Endpoint Plan
 
+## SQL Database Script
+
+### Technology Stack
+- **Database**: SSMS
+
 
   
