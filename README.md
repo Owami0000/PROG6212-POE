@@ -15,7 +15,9 @@ Part1 submission
 ### 1. Organiser
 The **Organiser** is the event creator and administrator. They have full control over their events:
 
-**Example Organisers:**
-- Thabo Mokoena (Soweto Marathon organiser)
-- Lindiwe Ntuli (Cape Town Cycle Tour organiser)
+### 2. Participant
+
+The **Participant** is the athlete/entrant who takes part in events
+
+
 
