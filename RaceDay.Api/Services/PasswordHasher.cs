@@ -2,14 +2,14 @@ using System.Security.Cryptography;
 
 namespace RaceDay.Api.Services;
 
-/// <summary>PBKDF2 (SHA-256) password hashing with a random salt per password.</summary>
+// (SHA-256) password hashing with a random salt per password.
 public static class PasswordHasher
 {
     private const int SaltSize = 16;
     private const int KeySize = 32;
     private const int Iterations = 100_000;
 
-    /// <summary>Returns "iterations.salt.hash" (salt and hash are Base64).</summary>
+    //Returns "iterations.salt.hash" (salt and hash are Base64).
     public static string Hash(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
