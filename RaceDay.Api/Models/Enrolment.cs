@@ -1,6 +1,6 @@
 namespace RaceDay.Api.Models;
 
-/// <summary>Links a Participant, an Event and the selected Category.</summary>
+//<summary>Links a Participant, an Event and the selected Category.
 public class Enrolment
 {
     public int EnrolmentId { get; set; }
