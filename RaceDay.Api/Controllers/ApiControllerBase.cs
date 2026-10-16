@@ -4,7 +4,7 @@ using RaceDay.Contracts;
 
 namespace RaceDay.Api.Controllers;
 
-[ApiController]
+
 public abstract class ApiControllerBase : ControllerBase
 {
     //Id of the logged-in user, read from the server-side session.
