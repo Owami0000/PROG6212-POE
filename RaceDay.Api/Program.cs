@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// SQL Server + EF Core (Code First)
+// SQL Server + EF Core 
 builder.Services.AddDbContext<RaceDayDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
