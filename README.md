@@ -109,6 +109,8 @@ protected endpoint (401).
 `.github/workflows/ci.yml` runs on every push: validates repo structure, restores, builds and runs all tests.
 
 ### GitHub Actions Screenshot
+<img width="1447" height="787" alt="image" src="https://github.com/user-attachments/assets/9326f260-3f12-41e7-ba2a-18d7d5f1fc64" />
+
 
 
 ### Video Presentation
