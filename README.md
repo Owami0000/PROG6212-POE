@@ -90,7 +90,6 @@ or press F5 in Visual Studio. Swagger opens at `http://localhost:5080/swagger`.
 
 Status codes: 200, 201, 204 (deletes), 400, 401, 403, 404, 409 (duplicates).
 
-**Changes from Part 1:** _(list any deliberate differences from your Part 1 plan here and why)_
 
 ### Swagger
 Open `/swagger`. Every endpoint has a summary, description, and documented responses. Suggested demo flow:
@@ -110,7 +109,7 @@ protected endpoint (401).
 `.github/workflows/ci.yml` runs on every push: validates repo structure, restores, builds and runs all tests.
 
 ### GitHub Actions Screenshot
-![Green build](docs/ci-green-build.png)
+
 
 ### Video Presentation
-YouTube (unlisted): _add link here_
+
