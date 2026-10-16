@@ -4,12 +4,11 @@ using RaceDay.Contracts;
 
 namespace RaceDay.Api.Filters;
 
-/// <summary>
-/// Session based authorisation.
-/// No session  -> 401 Unauthorized.
-/// Wrong role  -> 403 Forbidden.
-/// With no roles supplied, any logged-in user is allowed.
-/// </summary>
+
+// Session based authorisation.
+// No session  -> 401 Unauthorized.
+// Wrong role  -> 403 Forbidden.
+// With no roles supplied, any logged-in user is allowed.
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 public class SessionAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
