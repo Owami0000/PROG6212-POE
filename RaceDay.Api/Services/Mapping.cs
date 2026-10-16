@@ -7,7 +7,7 @@ public static class Mapping
 {
     public static string FullName(this AppUser? u) => u is null ? string.Empty : $"{u.FirstName} {u.LastName}";
 
-    /// <summary>Case-insensitive match against allowed values; returns the canonical value or null.</summary>
+    //Case-insensitive match against allowed values; returns the canonical value or null
     public static string? MatchAllowed(IEnumerable<string> allowed, string? input) =>
         allowed.FirstOrDefault(a => string.Equals(a, input?.Trim(), StringComparison.OrdinalIgnoreCase));
 
