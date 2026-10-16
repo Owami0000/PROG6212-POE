@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RaceDay.Contracts;
 
-/// <summary>Role names used across the system.</summary>
+//Role names used across the system.
 public static class RoleNames
 {
     public const string Organiser = "Organiser";
@@ -26,7 +26,7 @@ public static class EnrolmentStatuses
     public static readonly string[] All = { Pending, Confirmed, Cancelled };
 }
 
-/// <summary>Simple message wrapper used for error / info responses.</summary>
+//Simple message wrapper used for error / info responses.
 public class ApiMessage
 {
     public ApiMessage() { }
@@ -34,7 +34,7 @@ public class ApiMessage
     public string Message { get; set; } = string.Empty;
 }
 
-// ---------------- Auth ----------------
+//Auth
 public class RegisterRequest
 {
     [Required, StringLength(100)] public string FirstName { get; set; } = string.Empty;
@@ -42,9 +42,9 @@ public class RegisterRequest
     [Required, EmailAddress, StringLength(256)] public string Email { get; set; } = string.Empty;
     [Required, MinLength(8), StringLength(100)] public string Password { get; set; } = string.Empty;
     [Phone, StringLength(30)] public string? PhoneNumber { get; set; }
-    /// <summary>Either "Organiser" or "Participant".</summary>
+    //"Organiser" or "Participant"
     [Required] public string Role { get; set; } = string.Empty;
-    /// <summary>Only needed if the server is configured with an organiser registration code.</summary>
+    
     public string? OrganiserCode { get; set; }
 }
 
@@ -63,7 +63,7 @@ public class AuthResponse
     public string Role { get; set; } = string.Empty;
 }
 
-// ---------------- Profile ----------------
+//Profile
 public class ProfileDto
 {
     public int UserId { get; set; }
@@ -81,7 +81,7 @@ public class UpdateProfileRequest
     [Phone, StringLength(30)] public string? PhoneNumber { get; set; }
 }
 
-// ---------------- Events ----------------
+// Events
 public class CreateEventRequest
 {
     [Required, StringLength(150)] public string Name { get; set; } = string.Empty;
@@ -108,7 +108,7 @@ public class EventDto
     public string OrganiserName { get; set; } = string.Empty;
 }
 
-// ---------------- Categories ----------------
+// Categories
 public class CreateCategoryRequest
 {
     [Required, StringLength(100)] public string Name { get; set; } = string.Empty;
@@ -123,7 +123,7 @@ public class CategoryDto
     public string? Description { get; set; }
 }
 
-// ---------------- Enrolments ----------------
+//Enrolments
 public class CreateEnrolmentRequest
 {
     [Range(1, int.MaxValue)] public int EventId { get; set; }
@@ -132,7 +132,7 @@ public class CreateEnrolmentRequest
 
 public class UpdateEnrolmentStatusRequest
 {
-    /// <summary>Pending, Confirmed or Cancelled.</summary>
+    //Pending, Confirmed or Cancelled.
     [Required] public string Status { get; set; } = string.Empty;
 }
 
@@ -149,7 +149,7 @@ public class EnrolmentDto
     public DateTime EnrolledAt { get; set; }
 }
 
-// ---------------- Results ----------------
+// Results 
 public class CreateResultRequest
 {
     [Range(1, int.MaxValue)] public int EnrolmentId { get; set; }
@@ -171,7 +171,7 @@ public class ResultDto
     public int FinishPosition { get; set; }
 }
 
-/// <summary>Reserved for Part 3 image uploads.</summary>
+
 public class UploadResponse
 {
     public string FileUrl { get; set; } = string.Empty;
