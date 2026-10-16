@@ -18,7 +18,7 @@ public abstract class ApiTestBase : IClassFixture<RaceDayFactory>
         Password = TestPassword, Role = role
     };
 
-    /// <summary>Registers a new user, logs in, and returns a client holding the session cookie.</summary>
+    //Registers a new user, logs in, and returns a client holding the session cookie.
     protected async Task<(HttpClient Client, AuthResponse User)> CreateLoggedInUserAsync(string role)
     {
         var client = Factory.CreateClient();
