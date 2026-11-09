@@ -1,6 +1,5 @@
 # RaceDay
 
-![CI](https://github.com/<your-username>/<your-repo>/actions/workflows/ci.yml/badge.svg)
 
 ## Project Overview
 
@@ -286,7 +285,8 @@ The workflow:
 
 ### GitHub Actions Screenshot
 
-![Successful green build](docs/ci-green-build.png)
+![Successful green build](<img width="1318" height="677" alt="image" src="https://github.com/user-attachments/assets/0e940eec-cb4d-42be-9591-aeae2f9e2105" />
+)
 
 ## Video Presentation
 
