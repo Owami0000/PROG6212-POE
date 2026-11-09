@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Something went wrong";
+    var code = ViewData["Code"] as int?;
+}
+<div class="text-center py-5">
+    <div class="display-1">🚧</div>
+    <h1 class="mt-3">@(code == 404 ? "Page not found" : "Something went wrong")</h1>
+    <p class="text-secondary">
+        @(code == 404
+            ? "We couldn't find the page you were looking for."
+            : "An unexpected problem occurred. Please try again, or head back to the start.")
+    </p>
+    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back to RaceDay</a>
+</div>

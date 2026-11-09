@@ -1,0 +1,47 @@
+@model ParticipantHomeVm
+@{ ViewData["Title"] = "Upcoming events"; }
+<div class="page-header">
+    <h1>Upcoming events</h1>
+    <span class="text-secondary">@Model.Events.Count event@(Model.Events.Count == 1 ? "" : "s") found</span>
+</div>
+
+<form method="get" asp-action="Index" class="card card-rd p-3 mb-4">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-6">
+            <label class="form-label mb-1" for="search">Search by name, location or description</label>
+            <input id="search" name="search" value="@Model.Search" class="form-control" placeholder="e.g. Johannesburg" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label mb-1" for="type">Event type</label>
+            <select id="type" name="type" class="form-select">
+                <option value="">All types</option>
+                @foreach (var t in EventTypes.All)
+                {
+                    <option value="@t" selected="@(string.Equals(Model.Type, t, StringComparison.OrdinalIgnoreCase))">@t</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+        </div>
+    </div>
+</form>
+
+@if (Model.Events.Count == 0)
+{
+    <div class="card card-rd p-5 text-center">
+        <div class="display-4">🏁</div>
+        <h3 class="mt-2">No upcoming events match your search</h3>
+        <p class="text-secondary mb-0">Try clearing the filters or check back soon.</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var ev in Model.Events)
+        {
+            <div class="col-md-6 col-xl-4"><partial name="_EventCard" model="ev" /></div>
+        }
+    </div>
+}

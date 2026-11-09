@@ -1,0 +1,37 @@
+@model List<ResultDto>
+@{ ViewData["Title"] = "My results"; }
+<div class="page-header"><h1>My results</h1></div>
+
+@if (Model.Count == 0)
+{
+    <div class="card card-rd p-5 text-center">
+        <div class="display-4">⏱️</div>
+        <h3 class="mt-2">No results yet</h3>
+        <p class="text-secondary mb-0">Results appear here once an organiser has captured them after the event.</p>
+    </div>
+}
+else
+{
+    <div class="card card-rd">
+        <div class="table-responsive">
+            <table class="table table-rd align-middle mb-0">
+                <thead><tr><th>Event</th><th>Date</th><th>Category</th><th>Finish time</th><th>Position</th></tr></thead>
+                <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@r.EventName</td>
+                        <td>@Format.Date(r.EventDate)</td>
+                        <td>@r.CategoryName</td>
+                        <td>@Format.Time(r.FinishTime)</td>
+                        <td>
+                            <span class="position-chip">@Format.Ordinal(r.FinishPosition)</span>
+                            <span class="text-secondary small">out of @r.TotalFinishers finisher@(r.TotalFinishers == 1 ? "" : "s")</span>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

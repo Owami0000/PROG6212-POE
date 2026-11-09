@@ -1,0 +1,72 @@
+@model CategoriesPageVm
+@{ ViewData["Title"] = "Categories"; }
+<div class="page-header"><h1>Event categories</h1></div>
+
+<partial name="_EventSelector" model='new EventSelectorVm { Events = Model.Events, SelectedId = Model.SelectedEvent?.EventId, Action = "Categories" }' />
+
+@if (Model.SelectedEvent != null)
+{
+    var ev = Model.SelectedEvent;
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card card-rd">
+                <div class="card-header">Categories for @ev.Name</div>
+                @if (Model.Categories.Count == 0)
+                {
+                    <div class="card-body text-secondary">No categories yet. Add age groups or distances such as <em>Under 20</em>, <em>Senior</em>, <em>10km</em> or <em>21km</em>.</div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                    @foreach (var c in Model.Categories)
+                    {
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <div>
+                                    <div class="fw-semibold">@c.Name</div>
+                                    @if (!string.IsNullOrWhiteSpace(c.Description)) { <div class="meta-line">@c.Description</div> }
+                                </div>
+                                <form asp-action="DeleteCategory" method="post" class="d-inline"
+                                      data-confirm="Delete the category '@c.Name'?">
+                                    <input type="hidden" name="id" value="@c.CategoryId" />
+                                    <input type="hidden" name="eventId" value="@ev.EventId" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                            <details class="mt-2">
+                                <summary class="small text-primary" style="cursor:pointer">Edit</summary>
+                                <form asp-action="EditCategory" method="post" class="row g-2 mt-1">
+                                    <input type="hidden" name="id" value="@c.CategoryId" />
+                                    <input type="hidden" name="eventId" value="@ev.EventId" />
+                                    <div class="col-sm-5"><input name="name" value="@c.Name" class="form-control form-control-sm" required maxlength="100" aria-label="Category name" /></div>
+                                    <div class="col-sm-5"><input name="description" value="@c.Description" class="form-control form-control-sm" maxlength="300" placeholder="Description" aria-label="Description" /></div>
+                                    <div class="col-sm-2"><button type="submit" class="btn btn-navy btn-sm w-100">Save</button></div>
+                                </form>
+                            </details>
+                        </li>
+                    }
+                    </ul>
+                }
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card card-rd">
+                <div class="card-header">Add a category</div>
+                <div class="card-body">
+                    <form asp-action="AddCategory" method="post">
+                        <input type="hidden" name="eventId" value="@ev.EventId" />
+                        <div class="mb-3">
+                            <label class="form-label" for="newName">Name</label>
+                            <input id="newName" name="name" class="form-control" required maxlength="100" placeholder="e.g. Under 20, Senior, 10km" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="newDesc">Description (optional)</label>
+                            <input id="newDesc" name="description" class="form-control" maxlength="300" />
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Add category</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

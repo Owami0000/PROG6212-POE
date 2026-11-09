@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+.git/
+.github/
+.vs/
+*.user
+*.suo
+**/Dockerfile*
+**/appsettings.Development.json
+README.md
+VIDEO_SCRIPT*.md
+docs/

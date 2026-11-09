@@ -1,0 +1,67 @@
+@model ResultsPageVm
+@{
+    ViewData["Title"] = "Results";
+    var resultsByEnrolment = Model.Results.ToDictionary(r => r.EnrolmentId);
+}
+<div class="page-header"><h1>Capture results</h1></div>
+
+<partial name="_EventSelector" model='new EventSelectorVm { Events = Model.Events, SelectedId = Model.SelectedEvent?.EventId, Action = "Results" }' />
+
+@if (Model.SelectedEvent != null)
+{
+    var ev = Model.SelectedEvent;
+    var active = Model.Enrolments.Where(e => e.Status != "Cancelled").ToList();
+
+    if (ev.EventDate.Date > DateTime.Today)
+    {
+        <div class="alert alert-info">This event takes place on <strong>@Format.Date(ev.EventDate)</strong>. You can capture results once it has concluded.</div>
+    }
+
+    <div class="card card-rd">
+        <div class="card-header">Results for @ev.Name</div>
+        @if (active.Count == 0)
+        {
+            <div class="card-body text-secondary">There are no active enrolments to capture results for.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-rd align-middle mb-0">
+                    <thead><tr><th>Participant</th><th>Category</th><th>Status</th><th>Result</th></tr></thead>
+                    <tbody>
+                    @foreach (var e in active)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@e.ParticipantName</td>
+                            <td>@e.CategoryName</td>
+                            <td><partial name="_StatusBadge" model="e.Status" /></td>
+                            <td>
+                                @if (resultsByEnrolment.TryGetValue(e.EnrolmentId, out var result))
+                                {
+                                    <span class="position-chip">@Format.Ordinal(result.FinishPosition)</span>
+                                    <span class="ms-2">@Format.Time(result.FinishTime)</span>
+                                    <span class="status-badge status-confirmed ms-2">Published</span>
+                                }
+                                else
+                                {
+                                    <form asp-action="CaptureResult" method="post" class="row g-2 align-items-center">
+                                        <input type="hidden" name="enrolmentId" value="@e.EnrolmentId" />
+                                        <input type="hidden" name="eventId" value="@ev.EventId" />
+                                        <div class="col-auto">
+                                            <input name="finishTime" class="form-control form-control-sm" placeholder="hh:mm:ss" pattern="\d{1,2}:[0-5]\d:[0-5]\d" title="Format hh:mm:ss, e.g. 01:45:30" required aria-label="Finish time" style="width:110px" />
+                                        </div>
+                                        <div class="col-auto">
+                                            <input name="finishPosition" type="number" min="1" class="form-control form-control-sm" placeholder="Pos." required aria-label="Finishing position" style="width:80px" />
+                                        </div>
+                                        <div class="col-auto"><button type="submit" class="btn btn-primary btn-sm">Publish</button></div>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}

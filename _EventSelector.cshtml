@@ -1,0 +1,22 @@
+@model EventSelectorVm
+@if (Model.Events.Count > 0)
+{
+    <form method="get" asp-controller="Organiser" asp-action="@Model.Action" class="card card-rd p-3 mb-4">
+        <label for="eventId" class="form-label mb-1">Select an event</label>
+        <select id="eventId" name="eventId" class="form-select" data-autosubmit>
+            @foreach (var ev in Model.Events)
+            {
+                <option value="@ev.EventId" selected="@(ev.EventId == Model.SelectedId)">@ev.Name — @Format.Date(ev.EventDate)</option>
+            }
+        </select>
+        <noscript><button class="btn btn-navy mt-2" type="submit">Show</button></noscript>
+    </form>
+}
+else
+{
+    <div class="card card-rd p-4 text-center mb-4">
+        <h3>No events yet</h3>
+        <p class="text-secondary mb-3">Create your first event to get started.</p>
+        <div><a class="btn btn-primary" asp-controller="Organiser" asp-action="CreateEvent">Create an event</a></div>
+    </div>
+}

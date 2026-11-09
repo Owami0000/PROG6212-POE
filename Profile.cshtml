@@ -1,0 +1,63 @@
+@model ProfileVm
+@{
+    ViewData["Title"] = "My profile";
+    var initial = string.IsNullOrWhiteSpace(Model.FirstName) ? "?" : Model.FirstName.Substring(0, 1).ToUpper();
+}
+<div class="page-header"><h1>My profile</h1></div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card card-rd text-center p-4">
+            @if (!string.IsNullOrWhiteSpace(Model.ProfileImageUrl))
+            {
+                <img src="@Model.ProfileImageUrl" class="avatar mx-auto mb-3" alt="Profile picture" id="avatarPreview" />
+            }
+            else
+            {
+                <div class="avatar-ph mx-auto mb-3">@initial</div>
+                <img src="" class="avatar mx-auto mb-3 d-none" alt="Selected picture preview" id="avatarPreview" />
+            }
+            <h3 class="mb-0">@Model.FirstName @Model.LastName</h3>
+            <p class="text-secondary">@Model.Email</p>
+
+            <form asp-action="UploadProfileImage" method="post" enctype="multipart/form-data">
+                <label for="image" class="form-label small">Change profile picture (JPG, PNG, GIF, WEBP · max 5 MB)</label>
+                <input type="file" id="image" name="image" class="form-control mb-2" accept="image/*" data-preview="avatarPreview" required />
+                <button type="submit" class="btn btn-navy w-100">Upload picture</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card card-rd">
+            <div class="card-header">Personal information</div>
+            <div class="card-body p-4">
+                <form asp-action="Profile" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" value="@Model.Email" disabled />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+@model EnrolmentsPageVm
+@{ ViewData["Title"] = "Enrolments"; }
+<div class="page-header"><h1>Event enrolments</h1></div>
+
+<partial name="_EventSelector" model='new EventSelectorVm { Events = Model.Events, SelectedId = Model.SelectedEvent?.EventId, Action = "Enrolments" }' />
+
+@if (Model.SelectedEvent != null)
+{
+    var ev = Model.SelectedEvent;
+    <div class="card card-rd">
+        <div class="card-header">Participants in @ev.Name (@Model.Enrolments.Count)</div>
+        @if (Model.Enrolments.Count == 0)
+        {
+            <div class="card-body text-secondary">Nobody has entered this event yet.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-rd align-middle mb-0">
+                    <thead><tr><th>Participant</th><th>Category</th><th>Entered</th><th>Status</th><th class="text-end">Change status</th></tr></thead>
+                    <tbody>
+                    @foreach (var e in Model.Enrolments)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@e.ParticipantName</td>
+                            <td>@e.CategoryName</td>
+                            <td>@Format.Date(e.EnrolledAt)</td>
+                            <td><partial name="_StatusBadge" model="e.Status" /></td>
+                            <td class="text-end text-nowrap">
+                                @foreach (var st in EnrolmentStatuses.All.Where(x => x != e.Status))
+                                {
+                                    <form asp-action="UpdateEnrolmentStatus" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@e.EnrolmentId" />
+                                        <input type="hidden" name="eventId" value="@ev.EventId" />
+                                        <input type="hidden" name="status" value="@st" />
+                                        <button type="submit" class="btn btn-sm @(st == "Confirmed" ? "btn-success" : st == "Cancelled" ? "btn-outline-secondary" : "btn-warning")">@st</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}

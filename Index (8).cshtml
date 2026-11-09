@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Home";
+    var role = Context.Session.GetString("Role");
+}
+<section class="hero mb-5">
+    <p class="rd-display mb-2" style="color:var(--rd-lime);letter-spacing:.2em;">Run · Walk · Cycle</p>
+    <h1>Every race starts<br />on <em>RaceDay</em></h1>
+    <p class="lead mt-3">Discover events, pick your category and enter in seconds. Organisers manage events,
+        enrolments and results in one place.</p>
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        @if (role == null)
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="Auth" asp-action="Register">Join RaceDay</a>
+            <a class="btn btn-outline-light btn-lg" asp-controller="Auth" asp-action="Login">Log in</a>
+        }
+        else
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="@role" asp-action="Index">Go to my @(role == "Organiser" ? "dashboard" : "events")</a>
+        }
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="feature-tile">
+            <div class="icon">🏁</div>
+            <h3>For participants</h3>
+            <p class="mb-0 text-secondary">Browse upcoming events, filter by type or location, enter with the category that suits you,
+                and keep your race history and results in one place.</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="feature-tile">
+            <div class="icon">📋</div>
+            <h3>For organisers</h3>
+            <p class="mb-0 text-secondary">Create events with banners, define categories, confirm enrolments and publish finish times
+                and positions after the race.</p>
+        </div>
+    </div>
+</div>
