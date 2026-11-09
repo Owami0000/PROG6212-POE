@@ -3,166 +3,293 @@
 ![CI](https://github.com/<your-username>/<your-repo>/actions/workflows/ci.yml/badge.svg)
 
 ## Project Overview
-RaceDay is an event management system for running, walking and cycling events.
-Organisers create events (with banner images) and categories, manage enrolments and publish results.
-Participants browse upcoming events, enter with a category, and view their enrolments, results and profile.
 
-```
-Browser ──► RaceDay.Mvc (ASP.NET Core MVC, Docker) ──► RaceDay.Api (Web API) ──► SQL Server
-                                                              └──────────────► Azure Blob Storage (images)
-```
-The MVC project contains **no database code and no Azure code**: every data operation and every file upload goes through the API.
+RaceDay is an event management system designed for running, walking and cycling events. It allows event organisers to create and manage events, register participants, manage event categories and publish race results.
+
+Participants can browse upcoming events, enter events, choose their preferred categories and keep track of their enrolments and results. They can also manage their profiles and upload profile pictures.
+
+The system uses an ASP.NET Core MVC application connected to a RESTful Web API. SQL Server stores the application data, while Azure Blob Storage is used to store images.
+
+### How the System Works
+
+- Participants and organisers access the system through a web browser.
+- The MVC application handles the user interface.
+- The API handles all requests and communication with the database.
+- SQL Server stores user, event, enrolment and result information.
+- Azure Blob Storage stores event banners and profile pictures.
+
+The MVC application does not communicate directly with the database or Azure Storage. All these operations are handled through the API.
 
 ## User Roles
+
 ### Organiser
-- Dashboard: events created, enrolments per event, upcoming dates
-- Create / edit / delete events (name, description, date, location, distance, type Run/Walk/Cycle) and upload a banner image
-- Add / edit / delete categories (e.g. Under 20, Senior, 10km)
-- View enrolments per event (participant, category, status) and confirm / cancel them
-- Capture and publish finish times and finishing positions
+
+Organisers can:
+- View a dashboard showing created events, enrolments and upcoming events.
+- Create, edit and delete events.
+- Upload event banner images.
+- Create and manage event categories.
+- View participant enrolments.
+- Confirm or cancel enrolments.
+- Add finishing times and positions.
+- Publish event results.
 
 ### Participant
-- Upcoming events with search and type filter
-- Event details (banner, full information, categories) and enrolment with a category
-- My Events (enrolments with colour-coded status), My Results (event, date, category, finish time, e.g. *3rd out of 24 finishers*)
-- Profile: view/update details and upload a profile picture
 
-## Solution Structure
-```
-RaceDay
-├── docs/                    Part 1 ERD, endpoint plan, SQL script
-├── RaceDay.Api/             Part 2 + Part 3 additions (Azure Blob service, image endpoints)
-├── RaceDay.Contracts/       Shared DTOs used by the API and the MVC app
-├── RaceDay.Mvc/             Part 3 MVC front end
-│   ├── Controllers/         Auth, Home, Events, Organiser, Participant
-│   ├── Services/            RaceDayApiClient (all API calls, API session cookie handling)
-│   ├── ViewModels/  Helpers/  Views/  wwwroot/
-│   └── Dockerfile
-├── RaceDay.Api.Tests/       xUnit tests for the API
-├── .github/workflows/ci.yml
-├── .dockerignore
-└── README.md
-```
+Participants can:
+- Browse upcoming events.
+- Search for events and filter by event type.
+- View event details and available categories.
+- Enrol in events by selecting a category.
+- View their current and previous enrolments.
+- Check their race results and finishing positions.
+- Update their profile information.
+- Upload a profile picture.
 
-## Part 1 - Planning and Database
-Planning documents are in [`docs`](docs): ERD, API endpoint plan and SQL script.
+## Project Structure
 
-## Part 2 - RESTful API
-Authentication (PBKDF2-hashed passwords, server-side session storing UserId and Role), role-based access (401 / 403),
-profiles, events, categories, enrolments, results, Swagger documentation and unit tests.
-See the endpoint table below. Swagger: `http://localhost:5000/swagger`.
+The solution is organised into the following projects and folders:
 
-## Part 3 - MVC Web Application
-### Prerequisites
-.NET 8 SDK, SQL Server / SQL Express, Visual Studio 2022 (or the `dotnet` CLI), Docker Desktop (Linux containers, WSL 2),
-and an Azure Storage account (for image uploads).
+- **docs:** Contains planning documents, including the ERD, API endpoint plan and SQL script.
+- **RaceDay.Api:** Handles authentication, application data and communication with SQL Server and Azure Blob Storage.
+- **RaceDay.Contracts:** Contains shared data transfer objects (DTOs).
+- **RaceDay.Mvc:** Contains the website, controllers, views and user interface.
+- **RaceDay.Api.Tests:** Contains automated tests for the API.
+- **.github/workflows:** Contains the GitHub Actions CI/CD workflow.
+
+## Part 1 – Planning and Database
+
+The planning documents are available in the `docs` folder. These include:
+- Entity Relationship Diagram (ERD).
+- API endpoint plan.
+- SQL database script.
+
+## Part 2 – RESTful API
+
+The API manages the main functionality of RaceDay, including:
+- User registration and login.
+- Password hashing and authentication.
+- Role-based access for organisers and participants.
+- Profile management.
+- Event and category management.
+- Participant enrolments.
+- Race results.
+- Image uploads.
+- API documentation through Swagger.
+
+The API also includes automated unit tests to check that its main features work correctly.
+
+Swagger can be accessed at:
+
+`http://localhost:5000/swagger`
+
+## Part 3 – MVC Web Application
+
+The MVC application provides the website that users interact with. It connects to the API to retrieve and update information.
+
+### Requirements
+
+Before running the project, make sure you have:
+
+- .NET 8 SDK.
+- SQL Server or SQL Server Express.
+- Visual Studio 2022 or the .NET CLI.
+- Docker Desktop with Linux containers and WSL 2.
+- An Azure Storage account.
 
 ### Database Setup
-1. Set `ConnectionStrings:DefaultConnection` in `RaceDay.Api/appsettings.json` for your SQL Server instance.
-2. In Package Manager Console (default project `RaceDay.Api`):
-   ```
-   Add-Migration InitialRaceDayDatabase
-   Add-Migration AddImageUrls
-   Update-Database
-   ```
-   (If `InitialRaceDayDatabase` was already applied in Part 2, only run `Add-Migration AddImageUrls` and `Update-Database`.)
-   CLI: `dotnet ef migrations add AddImageUrls --project RaceDay.Api` then `dotnet ef database update --project RaceDay.Api`.
-3. Confirm in SSMS that `Events.BannerImageUrl` and `Users.ProfileImageUrl` exist.
+
+1. Open `RaceDay.Api/appsettings.json`.
+2. Update `ConnectionStrings:DefaultConnection` with your SQL Server connection string.
+3. Open the Package Manager Console and select `RaceDay.Api` as the default project.
+4. Run the following commands:
+
+```powershell
+Add-Migration InitialRaceDayDatabase
+Add-Migration AddImageUrls
+Update-Database
+```
+
+If the initial migration has already been applied, only run:
+
+```powershell
+Add-Migration AddImageUrls
+Update-Database
+```
+
+Afterwards, check in SQL Server Management Studio (SSMS) that the `Events` table contains `BannerImageUrl` and the `Users` table contains `ProfileImageUrl`.
 
 ### Azure Blob Storage Setup
-1. In the Azure portal create a **Storage account** (Standard, LRS).
-2. *Settings > Configuration*: enable **Allow Blob anonymous access** (needed so the browser can display blob URLs).
-   The API creates the container `raceday-images` with blob-level public read automatically.
-3. *Security + networking > Access keys*: copy a **connection string**.
-4. Store it as a secret - **never commit it**:
-   ```
-   dotnet user-secrets set "AzureBlobStorage:ConnectionString" "<your connection string>" --project RaceDay.Api
-   ```
-   (or set the environment variable `AzureBlobStorage__ConnectionString`).
 
-Upload flow: browser → MVC → `POST /api/events/{id}/banner` or `POST /api/profile/me/image` → API → Azure Blob Storage →
-blob URL saved in SQL Server → URL returned and displayed in MVC.
+Azure Blob Storage is used to store event banners and participant profile pictures.
 
-### How to Run RaceDay.Api
-Docker needs the API reachable from the host network, so start it on port 5000 over HTTP:
+1. Create a Storage Account in the Azure portal.
+2. Enable anonymous blob access in the storage account configuration.
+3. Copy the storage account connection string from Access Keys.
+4. Store the connection string using User Secrets:
+
+```powershell
+dotnet user-secrets set "AzureBlobStorage:ConnectionString" "<your connection string>" --project RaceDay.Api
 ```
+
+Do not upload your connection string or other sensitive credentials to GitHub.
+
+The API automatically creates the `raceday-images` container.
+
+### Running the API
+
+Start the API using:
+
+```bash
 dotnet run --project RaceDay.Api --urls http://0.0.0.0:5000
 ```
-Check `http://localhost:5000/swagger`. Leave this terminal running.
 
-### How to Run RaceDay.Mvc Locally
-```
+Check that the API is running by opening:
+
+`http://localhost:5000/swagger`
+
+Keep the API running while using the MVC application.
+
+### Running the MVC Application
+
+Open another terminal and run:
+
+```bash
 dotnet run --project RaceDay.Mvc
 ```
-Open `http://localhost:5100`. The API address comes from `RaceDay.Mvc/appsettings.json` → `ApiSettings:BaseUrl` (`http://localhost:5000/`).
 
-### Docker Setup
-Verify Docker first: `docker --version` and `docker info`.
+Open the website at:
 
-#### Build Image
-Run from the folder containing `RaceDay.sln`:
-```
+`http://localhost:5100`
+
+The MVC application uses the API address configured in `RaceDay.Mvc/appsettings.json`.
+
+### Running with Docker
+
+Make sure Docker Desktop is running.
+
+Build the Docker image from the folder containing `RaceDay.sln`:
+
+```bash
 docker build -f RaceDay.Mvc/Dockerfile -t raceday-mvc:part3 .
 ```
 
-#### Run Container
-With the API running on the host (see above):
-```
+Run the container:
+
+```bash
 docker run -d --name raceday-mvc -p 8080:8080 -e ApiSettings__BaseUrl=http://host.docker.internal:5000/ raceday-mvc:part3
 ```
-Open `http://localhost:8080`. Inside a container `localhost` means the container itself, so the API on the Windows host is
-reached through `host.docker.internal`. Useful commands: `docker ps`, `docker logs raceday-mvc`, `docker rm -f raceday-mvc`.
 
-> **Tested command:** _confirm that you ran exactly this command successfully on your machine before submitting._
+Open the website at:
 
-### Authentication and Session Flow
-1. MVC posts the login to `POST /api/auth/login`.
-2. The API verifies the password hash, creates its server-side session and returns `Set-Cookie: .RaceDay.Session=...`.
-3. `RaceDayApiClient` stores that API cookie in the **MVC session** together with `UserId`, `Role` and `DisplayName`,
-   and sends it as the `Cookie` header on every later API call (cookie handling is per user; the shared `HttpClient`
-   handler has `UseCookies = false`).
-4. MVC controllers check the MVC session: not logged in → redirect to Login; wrong role → Access Denied page.
-   If the API answers 401 (its session timed out) the user is sent back to Login with a friendly message.
-5. Logout calls `POST /api/auth/logout` and clears the MVC session.
+`http://localhost:8080`
 
-### Organiser Features
-Dashboard · Events (create / edit / delete / banner) · Categories · Enrolments (confirm / cancel) · Results (capture & publish).
+The API must still be running on the host computer while the MVC application runs inside Docker.
 
-### Participant Features
-Upcoming events + filters · Event details & enrolment · My Events · My Results · Profile + profile picture.
+Useful Docker commands:
 
-### API Endpoints
+```bash
+docker ps
+docker logs raceday-mvc
+docker rm -f raceday-mvc
+```
+
+### Authentication and Sessions
+
+RaceDay uses session-based authentication.
+
+1. Users log in through the MVC application.
+2. The MVC application sends their login details to the API.
+3. The API verifies the password and creates a session.
+4. The MVC application stores the session information and uses it for future API requests.
+5. Access is restricted based on the user's role.
+6. When a user logs out, their session is cleared.
+
+If a session expires, the user is redirected to the login page.
+
+## Main Application Features
+
+**Organiser:**
+- Dashboard.
+- Event management.
+- Category management.
+- Enrolment management.
+- Results management.
+
+**Participant:**
+- Browse and search events.
+- View event information.
+- Enrol in events.
+- View enrolments.
+- View race results.
+- Manage profile information and profile pictures.
+
+## API Endpoints
+
 | Area | Endpoint | Access |
 |---|---|---|
-| Auth | `POST /api/auth/register`, `/login`, `/logout` | Public |
-| Profile | `GET/PUT /api/profile/me`, `POST /api/profile/me/image` | Any logged-in user |
-| Events | `GET /api/events`, `GET /api/events/{id}` | Any logged-in user |
-| Events | `GET /api/events/mine`, `POST`, `PUT/DELETE /api/events/{id}`, `POST /api/events/{id}/banner` | Organiser (owner) |
-| Categories | `GET /api/events/{eventId}/categories` | Any logged-in user |
-| Categories | `POST /api/events/{eventId}/categories`, `PUT/DELETE /api/categories/{id}` | Organiser (owner) |
-| Enrolments | `POST /api/enrolments`, `GET /api/enrolments/mine` | Participant |
-| Enrolments | `GET /api/enrolments/event/{eventId}`, `PUT /api/enrolments/{id}/status` | Organiser (owner) |
-| Results | `POST /api/results`, `GET /api/results/event/{eventId}` | Organiser (owner) |
+| Authentication | `POST /api/auth/register` | Public |
+| Authentication | `POST /api/auth/login` | Public |
+| Authentication | `POST /api/auth/logout` | Logged-in user |
+| Profile | `GET/PUT /api/profile/me` | Logged-in user |
+| Profile | `POST /api/profile/me/image` | Logged-in user |
+| Events | `GET /api/events` | Logged-in user |
+| Events | `GET /api/events/{id}` | Logged-in user |
+| Events | `POST /api/events` | Organiser |
+| Events | `PUT/DELETE /api/events/{id}` | Organiser |
+| Events | `POST /api/events/{id}/banner` | Organiser |
+| Categories | `GET /api/events/{eventId}/categories` | Logged-in user |
+| Categories | `POST /api/events/{eventId}/categories` | Organiser |
+| Categories | `PUT/DELETE /api/categories/{id}` | Organiser |
+| Enrolments | `POST /api/enrolments` | Participant |
+| Enrolments | `GET /api/enrolments/mine` | Participant |
+| Enrolments | `GET /api/enrolments/event/{eventId}` | Organiser |
+| Enrolments | `PUT /api/enrolments/{id}/status` | Organiser |
+| Results | `POST /api/results` | Organiser |
+| Results | `GET /api/results/event/{eventId}` | Organiser |
 | Results | `GET /api/results/mine` | Participant |
 
-**Changes from Part 1/Part 2:** `BannerImageUrl` (Events) and `ProfileImageUrl` (Users) columns added for Azure images;
-`EventDto.EnrolmentCount`, `ResultDto.EventDate` and `ResultDto.TotalFinishers` added so the dashboard and
-"3rd out of 24 finishers" can be shown without MVC touching the database. _(Add anything else you changed.)_
+## Changes from Previous Parts
 
-### Unit Testing
-```
+The following additions were made when developing Part 3:
+
+- Added `BannerImageUrl` to the Events table.
+- Added `ProfileImageUrl` to the Users table.
+- Added image upload functionality using Azure Blob Storage.
+- Added enrolment counts to event information.
+- Added event dates and total finisher information to result data.
+- Added the MVC application to provide a user-friendly interface.
+- Added Docker support for running the MVC application.
+
+## Unit Testing
+
+Run the automated tests using:
+
+```bash
 dotnet test RaceDay.Api.Tests/RaceDay.Api.Tests.csproj
 ```
-Tests run the real API in memory with an InMemory database and a fake blob service (no Azure needed): authentication,
-profile, events, categories, enrolments, results, image uploads (success, wrong role, non-image, too large), a role matrix
-(403 / 401 on every protected endpoint), enrolment counts and finisher totals.
 
-## CI/CD
-`.github/workflows/ci.yml` runs on every push and pull request: validates the repository structure, restores, builds the
-**whole solution including RaceDay.Mvc**, runs the unit tests, and then builds the MVC Docker image.
+The tests cover authentication, profiles, events, categories, enrolments, results and image uploads.
+
+They also check user permissions, invalid requests and different access levels. The tests use an InMemory database and a fake blob storage service, so an actual Azure connection is not required.
+
+## CI/CD – GitHub Actions
+
+RaceDay uses GitHub Actions to automatically check the project whenever changes are pushed to the repository or a pull request is created.
+
+The workflow:
+- Checks the repository structure.
+- Restores the required packages.
+- Builds the entire solution.
+- Runs the automated unit tests.
+- Builds the MVC Docker image.
 
 ### GitHub Actions Screenshot
+
 ![Successful green build](docs/ci-green-build.png)
 
 ## Video Presentation
-Unlisted YouTube video: **<paste link here>**
+
+YouTube video presentation:
+
+**[https://youtu.be/XUMtbU-lIrg]**
