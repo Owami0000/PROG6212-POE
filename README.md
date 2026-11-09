@@ -285,8 +285,10 @@ The workflow:
 
 ### GitHub Actions Screenshot
 
-![Successful green build](<img width="1318" height="677" alt="image" src="https://github.com/user-attachments/assets/0e940eec-cb4d-42be-9591-aeae2f9e2105" />
-)
+Successful green build
+<img width="1318" height="677" alt="image" src="https://github.com/user-attachments/assets/4008586d-4e65-4013-8fbf-3a00f08a7fe7" />
+
+
 
 ## Video Presentation
 
