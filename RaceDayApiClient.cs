@@ -4,11 +4,8 @@ using System.Text.Json;
 using RaceDay.Contracts;
 
 namespace RaceDay.Mvc.Services;
-
-/// <summary>
 /// The only way the MVC app talks to data: every operation goes through the Part 2 API.
 /// The API's session cookie is captured at login, stored in the MVC session and sent with every later request.
-/// </summary>
 public class RaceDayApiClient
 {
     public const string ApiCookieName = ".RaceDay.Session";   // cookie name used by RaceDay.Api
